@@ -1093,7 +1093,6 @@ function startWorkoutFromRoutine() {
 
 // ── Seed Data (Jan–Mar 2026 workout history) ──────────────────────────────────
 function seedHistoryIfEmpty() {
-    if (workoutHistory.length > 0) return;
     if (localStorage.getItem('seedImported')) return;
     const SEED = [
         { id:'seed-20260114', date:'2026-01-14', duration:60,  bodyParts:['back','biceps'], exercises:[
@@ -1437,7 +1436,9 @@ function seedHistoryIfEmpty() {
             { exerciseId:'calf-raise',         sets:[{weight:15,reps:15},{weight:15,reps:20},{weight:15,reps:12}] },
         ]},
     ];
-    workoutHistory = SEED;
+    const existingIds = new Set(workoutHistory.map(w => w.id));
+    const toAdd = SEED.filter(w => !existingIds.has(w.id));
+    workoutHistory = [...workoutHistory, ...toAdd].sort((a, b) => a.date < b.date ? -1 : 1);
     saveWorkoutHistory();
     localStorage.setItem('seedImported', '1');
 }
