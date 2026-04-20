@@ -89,6 +89,14 @@ window.syncModule = (() => {
             // Offline persistence (works offline, syncs on reconnect)
             db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
 
+            // Handle return from signInWithRedirect
+            auth.getRedirectResult().catch(err => {
+                if (err.code && err.code !== 'auth/null-user') {
+                    console.error('[sync] redirect result error', err);
+                    setSyncUI('error', 'Sign-in failed');
+                }
+            });
+
             auth.onAuthStateChanged(user => {
                 if (user) {
                     uid = user.uid;
@@ -117,7 +125,8 @@ window.syncModule = (() => {
                 await auth.signOut();
             } else {
                 try {
-                    await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+                    // Use redirect (not popup) — popup is blocked by mobile browsers and PWAs
+                    await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
                 } catch (err) {
                     console.error('[sync] sign-in failed', err);
                     setSyncUI('error', 'Sign-in failed');
