@@ -1,0 +1,11 @@
+{
+  "name": "workout-tracker",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./styles/input.css -o ./styles/main.css --minify",
+    "dev": "tailwindcss -i ./styles/input.css -o ./styles/main.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

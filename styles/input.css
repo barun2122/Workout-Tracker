@@ -1,0 +1,1021 @@
+/* ─── Font ───────────────────────────────────────────────────────────────── */
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    @apply h-full overflow-hidden;
+  }
+
+  body {
+    font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+    @apply antialiased bg-canvas text-content-primary;
+    min-height: 100dvh;
+  }
+}
+
+/* ─── Components ─────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* App Shell */
+  .app-container {
+    @apply flex flex-col relative mx-auto bg-canvas;
+    height: 100dvh;
+    max-width: 500px;
+  }
+
+  .screen {
+    @apply hidden flex-col overflow-y-auto px-6 pb-4;
+    height: calc(100dvh - 64px);
+    overscroll-behavior: contain;
+  }
+
+  .screen.active {
+    @apply flex;
+  }
+
+  /* Top App Bar */
+  .screen-header {
+    @apply flex items-center justify-between gap-2 shrink-0 mb-6;
+    min-height: 56px;
+  }
+
+  .screen-header h1 {
+    @apply text-xl font-bold flex-1;
+    line-height: 28px;
+  }
+
+  .back-btn {
+    @apply w-9 h-9 flex items-center justify-center bg-surface-card border-0 rounded-lg text-content-primary cursor-pointer shrink-0;
+  }
+
+  .done-btn {
+    @apply h-9 px-4 bg-surface-primary border-0 rounded-lg text-content-inverse text-sm font-bold cursor-pointer shrink-0;
+    font-family: 'Satoshi', sans-serif;
+  }
+
+  .add-set-btn {
+    @apply h-9 px-4 bg-surface-primary border-0 rounded-lg text-content-inverse text-sm font-bold cursor-pointer flex items-center gap-1 shrink-0;
+    font-family: 'Satoshi', sans-serif;
+  }
+
+  .add-btn {
+    @apply w-9 h-9 flex items-center justify-center bg-surface-primary border-0 rounded-lg text-content-inverse cursor-pointer shrink-0;
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 mx-auto bg-canvas flex justify-around z-[100];
+    max-width: 500px;
+    border-top: 1px solid #E8E8E8;
+    padding-top: 4px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+    height: 64px;
+  }
+
+  .nav-item {
+    @apply flex flex-col items-center gap-[3px] bg-transparent border-0 text-content-disabled cursor-pointer transition-colors flex-1;
+    font-family: 'Satoshi', sans-serif;
+    padding: 4px 8px;
+  }
+
+  .nav-item.active {
+    @apply text-content-primary;
+  }
+
+  .nav-icon {
+    @apply flex items-center;
+  }
+
+  .nav-icon svg {
+    @apply w-[22px] h-[22px];
+  }
+
+  .nav-item span:last-child {
+    @apply font-bold;
+    font-size: 10px;
+  }
+
+  /* Home Screen */
+  .quick-start {
+    @apply mb-4;
+  }
+
+  .start-workout-btn {
+    @apply w-full bg-surface-primary border-0 text-content-inverse rounded-xl font-bold cursor-pointer flex items-center justify-center gap-2 transition-opacity active:opacity-85;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 16px;
+    padding: 18px 24px;
+  }
+
+  .start-workout-btn .icon {
+    @apply flex items-center;
+  }
+
+  .home-header {
+    @apply flex-col items-start;
+    gap: 4px;
+    height: auto;
+    padding-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .home-header-text h1 {
+    @apply text-3xl font-bold;
+    line-height: 40px;
+  }
+
+  .home-header-text .date {
+    @apply block text-sm font-medium text-content-secondary;
+  }
+
+  .stats-row {
+    @apply flex gap-2 mb-6;
+  }
+
+  .stat-item {
+    @apply flex-1 bg-surface-card p-4 rounded-xl flex flex-col gap-1;
+  }
+
+  .stat-value {
+    @apply block font-bold text-content-primary;
+    font-size: 36px;
+    line-height: 1;
+  }
+
+  .stat-label {
+    @apply text-xs font-medium text-content-secondary;
+  }
+
+  .section {
+    @apply mb-6;
+  }
+
+  .section h2 {
+    @apply font-bold text-content-tertiary uppercase mb-2;
+    font-size: 11px;
+    letter-spacing: 0.7px;
+  }
+
+  .last-workout-card {
+    @apply bg-surface-card rounded-xl p-4;
+  }
+
+  .last-workout-card.empty {
+    @apply text-center text-content-tertiary font-medium;
+    padding: 36px 24px;
+    font-size: 14px;
+  }
+
+  .last-workout-header {
+    @apply flex justify-between items-start mb-4;
+  }
+
+  .last-workout-date {
+    @apply font-bold;
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .last-workout-meta {
+    @apply font-medium text-content-secondary ml-2;
+    font-size: 12px;
+  }
+
+  .last-workout-body-parts {
+    @apply flex gap-1;
+  }
+
+  .last-workout-body-parts svg {
+    @apply w-[18px] h-[18px] text-content-secondary;
+  }
+
+  .last-workout-exercises {
+    @apply flex flex-col;
+  }
+
+  .last-workout-exercise {
+    @apply flex justify-between items-center py-[10px];
+    border-bottom: 1px solid #E8E8E8;
+  }
+
+  .last-workout-exercise:last-child {
+    border-bottom: none;
+  }
+
+  .last-workout-exercise-name {
+    @apply font-medium;
+    font-size: 14px;
+  }
+
+  .last-workout-exercise-details {
+    @apply font-medium text-content-secondary;
+    font-size: 12px;
+  }
+
+  /* Body Parts Grid */
+  .body-parts-grid {
+    @apply grid gap-2;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .body-part-item {
+    @apply bg-surface-card rounded-xl text-center cursor-pointer flex flex-col items-center transition-colors active:bg-stroke;
+    padding: 14px 4px;
+    gap: 3px;
+  }
+
+  .body-part-item .icon {
+    @apply w-[26px] h-[26px] flex items-center justify-center text-content-secondary;
+  }
+
+  .body-part-item .icon svg {
+    @apply w-[22px] h-[22px];
+  }
+
+  .body-part-item .name {
+    @apply font-bold text-content-primary;
+    font-size: 10px;
+  }
+
+  .body-part-item .last-trained {
+    @apply font-medium text-content-tertiary;
+    font-size: 9px;
+  }
+
+  .body-part-item .last-trained.today    { @apply text-content-positive; }
+  .body-part-item .last-trained.days-ago { @apply text-content-caution; }
+
+  /* Workout Screen */
+  .workout-summary {
+    @apply bg-surface-card rounded-xl p-4 mb-4 shrink-0;
+  }
+
+  .workout-summary-top {
+    @apply flex justify-between items-center;
+  }
+
+  .workout-timer {
+    @apply font-bold text-content-primary text-xl;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+  }
+
+  .body-parts-display {
+    @apply flex gap-2 flex-wrap;
+  }
+
+  .bp-icon {
+    @apply flex items-center;
+  }
+
+  .bp-icon svg {
+    @apply w-[22px] h-[22px] text-content-secondary;
+  }
+
+  .body-parts-display:empty::before {
+    content: 'No muscles selected';
+    @apply text-sm font-medium text-content-tertiary;
+  }
+
+  /* Tabs */
+  .body-part-tabs {
+    @apply flex overflow-x-auto shrink-0;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    border-bottom: 1px solid #E8E8E8;
+    margin-bottom: 0;
+    scrollbar-width: none;
+  }
+
+  .body-part-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .body-part-tab {
+    @apply shrink-0 h-11 bg-transparent border-0 text-content-secondary font-medium cursor-pointer flex items-center gap-1 relative whitespace-nowrap transition-colors;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 14px;
+    padding: 0 16px;
+  }
+
+  .body-part-tab::after {
+    content: '';
+    @apply absolute bottom-0 h-[2px] bg-stroke-selected rounded-sm opacity-0 transition-opacity;
+    left: 16px;
+    right: 16px;
+  }
+
+  .body-part-tab.active {
+    @apply text-content-primary font-bold;
+  }
+
+  .body-part-tab.active::after {
+    @apply opacity-100;
+  }
+
+  .tab-icon {
+    @apply flex items-center;
+  }
+
+  .tab-icon svg {
+    @apply w-4 h-4;
+  }
+
+  /* Exercise List */
+  .exercise-list {
+    @apply flex flex-col shrink-0;
+  }
+
+  .exercise-item {
+    @apply flex justify-between items-center py-4 cursor-pointer;
+    min-height: 64px;
+    border-bottom: 1px solid #E8E8E8;
+  }
+
+  .exercise-item:last-child {
+    border-bottom: none;
+  }
+
+  .exercise-name-row {
+    @apply flex items-center flex-wrap gap-1 mb-[2px];
+  }
+
+  .exercise-item .name {
+    @apply text-content-primary font-medium;
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .exercise-item .body-part-tag {
+    @apply font-medium text-content-tertiary inline-flex items-center;
+    font-size: 11px;
+    gap: 3px;
+  }
+
+  .exercise-item .body-part-tag svg {
+    @apply w-3 h-3;
+  }
+
+  .exercise-item .added-check {
+    @apply text-content-positive flex items-center shrink-0;
+  }
+
+  .exercise-add-btn {
+    @apply w-8 h-8 flex items-center justify-center bg-surface-primary border-0 rounded-lg text-content-inverse cursor-pointer shrink-0;
+  }
+
+  /* Active exercises */
+  .current-exercises {
+    @apply mt-6 shrink-0;
+  }
+
+  .current-exercises h3 {
+    @apply font-bold text-content-tertiary uppercase mb-2;
+    font-size: 11px;
+    letter-spacing: 0.7px;
+  }
+
+  .active-exercise-card {
+    @apply bg-surface-card rounded-xl p-4 mb-2 cursor-pointer transition-colors active:bg-stroke;
+  }
+
+  .active-exercise-header {
+    @apply flex justify-between items-center mb-1;
+  }
+
+  .active-exercise-name {
+    @apply text-[15px] font-bold flex items-center gap-2;
+  }
+
+  .ex-icon {
+    @apply flex items-center;
+  }
+
+  .ex-icon svg {
+    @apply w-[18px] h-[18px] text-content-secondary;
+  }
+
+  .active-exercise-sets {
+    @apply text-xs font-medium text-content-secondary;
+  }
+
+  .active-sets-summary {
+    @apply text-[13px] font-medium text-content-tertiary;
+  }
+
+  .empty-state {
+    @apply text-center text-content-tertiary font-medium;
+    padding: 36px 24px;
+    font-size: 14px;
+  }
+
+  /* Exercise Detail Screen */
+  .exercise-header {
+    @apply mb-4 shrink-0;
+  }
+
+  .body-part-badge {
+    @apply inline-flex items-center gap-1 bg-surface-card rounded-pill border border-stroke font-medium text-content-secondary;
+    padding: 6px 8px;
+    font-size: 13px;
+  }
+
+  .badge-icon {
+    @apply flex items-center;
+  }
+
+  .badge-icon svg {
+    @apply w-[15px] h-[15px] text-content-secondary;
+  }
+
+  /* Sets Table */
+  .sets-table-container {
+    @apply bg-surface-card rounded-xl overflow-hidden shrink-0;
+  }
+
+  .sets-table {
+    @apply w-full border-collapse;
+  }
+
+  .sets-table th {
+    @apply font-bold text-content-tertiary uppercase text-center;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 8px;
+    background: #E8E8E8;
+  }
+
+  .sets-table td {
+    @apply text-center;
+    padding: 10px 4px;
+    border-bottom: 1px solid #E8E8E8;
+  }
+
+  .sets-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .sets-table input {
+    @apply border-stroke border-[1.5px] rounded-lg bg-canvas text-content-primary font-medium text-center transition-colors focus:outline-none focus:border-stroke-selected;
+    font-family: 'Satoshi', sans-serif;
+    width: 72px;
+    padding: 10px 8px;
+    font-size: 16px;
+  }
+
+  .remove-set-btn {
+    @apply bg-transparent border-0 text-content-disabled cursor-pointer flex items-center justify-center transition-colors active:text-content-negative;
+    padding: 4px 8px;
+  }
+
+  .set-summary {
+    @apply flex justify-between items-center mt-4 p-4 bg-surface-card rounded-xl font-medium text-content-secondary shrink-0;
+    font-size: 14px;
+  }
+
+  /* History Screen */
+  .history-list {
+    @apply flex flex-col gap-2;
+  }
+
+  .history-item {
+    @apply bg-surface-card rounded-xl p-4;
+  }
+
+  .history-header {
+    @apply flex justify-between items-center mb-4;
+  }
+
+  .history-date {
+    @apply font-bold;
+    font-size: 15px;
+  }
+
+  .history-duration {
+    @apply font-medium text-content-secondary ml-2;
+    font-size: 12px;
+  }
+
+  .history-body-parts {
+    @apply flex gap-1;
+  }
+
+  .history-body-parts svg {
+    @apply w-[18px] h-[18px] text-content-secondary;
+  }
+
+  .history-exercise {
+    @apply flex justify-between items-center py-[10px] font-medium;
+    font-size: 14px;
+    border-bottom: 1px solid #E8E8E8;
+  }
+
+  .history-exercise:last-child {
+    border-bottom: none;
+  }
+
+  .history-exercise-name {
+    @apply flex items-center gap-2 font-medium;
+  }
+
+  .history-exercise-stats {
+    @apply font-medium text-content-secondary;
+    font-size: 12px;
+  }
+
+  /* Progress Screen */
+  .exercise-picker {
+    @apply mb-4 shrink-0;
+  }
+
+  .exercise-picker select {
+    @apply w-full bg-surface-card border-stroke border-[1.5px] rounded-xl text-content-primary font-medium transition-colors focus:outline-none focus:border-stroke-selected;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 15px;
+    padding: 16px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23919191' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .progress-content {
+    @apply bg-surface-card rounded-xl p-4;
+  }
+
+  .progress-header {
+    @apply flex items-center gap-2 font-bold mb-4;
+    font-size: 16px;
+  }
+
+  .progress-stats {
+    @apply grid gap-2 mb-4;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .progress-stat {
+    @apply text-center bg-canvas rounded-lg;
+    padding: 16px 8px;
+  }
+
+  .progress-stat-value {
+    @apply font-bold text-content-primary;
+    font-size: 24px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .progress-stat-label {
+    @apply font-bold text-content-tertiary uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .progress-recent-label {
+    @apply font-bold text-content-tertiary uppercase;
+    font-size: 11px;
+    letter-spacing: 0.7px;
+    margin: 16px 0 8px;
+  }
+
+  .progress-recent {
+    @apply overflow-y-auto;
+    max-height: 300px;
+  }
+
+  .progress-row {
+    @apply flex justify-between items-center py-[10px] font-medium;
+    font-size: 14px;
+    border-bottom: 1px solid #E8E8E8;
+  }
+
+  .progress-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Modals */
+  .modal {
+    @apply fixed inset-0 flex justify-center items-end z-[1000];
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .modal.hidden { display: none; }
+
+  .modal-content {
+    @apply bg-canvas w-full overflow-y-auto;
+    border-radius: 12px 12px 0 0;
+    padding: 24px;
+    max-width: 500px;
+    max-height: 85vh;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+
+  .modal-content::before {
+    content: '';
+    @apply block mx-auto rounded-pill;
+    width: 36px;
+    height: 4px;
+    background: #E8E8E8;
+    margin-bottom: 24px;
+  }
+
+  .modal-content h3 {
+    @apply font-bold mb-1;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .modal-subtext {
+    @apply font-medium text-content-secondary mb-4;
+    font-size: 14px;
+  }
+
+  .form-group {
+    @apply mb-4;
+  }
+
+  .form-group label {
+    @apply block font-bold text-content-tertiary uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .form-group input,
+  .form-group select {
+    @apply w-full bg-surface-card border-stroke border-[1.5px] rounded-lg text-content-primary font-medium transition-colors focus:outline-none focus:border-stroke-selected;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 15px;
+    padding: 16px;
+  }
+
+  .modal-actions {
+    @apply flex gap-2 mt-6;
+  }
+
+  .btn {
+    @apply flex-1 border-0 rounded-lg font-bold cursor-pointer transition-opacity active:opacity-80;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 15px;
+    padding: 16px;
+  }
+
+  .btn-primary   { @apply bg-surface-primary text-content-inverse; }
+  .btn-secondary { @apply bg-surface-card text-content-primary; }
+
+  /* Body Part Chips */
+  .bp-chips-container {
+    @apply flex flex-wrap gap-2 mb-4;
+  }
+
+  .bp-chip {
+    @apply flex items-center bg-canvas border-stroke border-[1.5px] rounded-pill text-content-secondary font-medium cursor-pointer transition-all;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 13px;
+    height: 40px;
+    padding: 0 16px;
+    gap: 6px;
+  }
+
+  .bp-chip-sel {
+    @apply bg-surface-primary border-surface-primary text-content-inverse;
+  }
+
+  .bp-chip-icon {
+    @apply flex items-center;
+  }
+
+  .bp-chip-icon svg {
+    @apply w-[15px] h-[15px];
+  }
+
+  /* Start Suggestions */
+  .start-suggestion-section {
+    @apply bg-surface-card rounded-xl p-4 mb-4;
+  }
+
+  .start-suggestion-label {
+    @apply block font-bold text-content-tertiary uppercase mb-2;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+
+  .start-suggestion-list {
+    @apply flex flex-col gap-2;
+  }
+
+  .start-ex-row {
+    @apply flex justify-between items-center font-medium;
+    font-size: 14px;
+  }
+
+  .start-ex-stat {
+    @apply font-medium text-content-secondary;
+    font-size: 13px;
+  }
+
+  .start-no-history {
+    @apply font-medium text-content-tertiary;
+    font-size: 13px;
+  }
+
+  /* Previous Session Card */
+  .prev-session-card {
+    @apply bg-surface-card rounded-xl p-4 mb-4 shrink-0;
+  }
+
+  .prev-session-inner {
+    @apply flex flex-col gap-2;
+  }
+
+  .prev-row {
+    @apply flex flex-col gap-1;
+  }
+
+  .prev-label {
+    @apply font-bold text-content-tertiary uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+
+  .prev-chips {
+    @apply flex flex-wrap gap-1;
+  }
+
+  .prev-chip {
+    @apply bg-canvas border-stroke border rounded-pill font-medium text-content-secondary;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .prev-chip.prev-more { @apply text-content-tertiary; }
+
+  .pr-row {
+    @apply flex items-center gap-2;
+  }
+
+  .pr-badge-sm {
+    @apply font-bold text-content-caution rounded-pill;
+    font-size: 10px;
+    background: rgba(224, 121, 18, 0.1);
+    padding: 2px 8px;
+  }
+
+  .pr-val {
+    @apply font-bold text-content-caution;
+    font-size: 13px;
+  }
+
+  /* Video Link */
+  .video-link-section {
+    @apply mt-4 bg-surface-card rounded-xl p-4 shrink-0;
+  }
+
+  .vl-row {
+    @apply flex items-center gap-2;
+  }
+
+  .vl-row svg {
+    @apply shrink-0 text-content-tertiary;
+  }
+
+  .vl-label {
+    @apply shrink-0 font-medium text-content-secondary;
+    font-size: 13px;
+  }
+
+  .vl-url {
+    @apply flex-1 font-medium text-content-primary overflow-hidden text-ellipsis whitespace-nowrap;
+    font-size: 13px;
+    text-decoration: underline;
+    text-decoration-color: #E8E8E8;
+  }
+
+  .vl-empty {
+    @apply flex-1 font-medium text-content-tertiary;
+    font-size: 13px;
+  }
+
+  .vl-btn {
+    @apply bg-canvas border-stroke border rounded-lg font-bold text-content-secondary cursor-pointer shrink-0;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  /* Type Badges */
+  .type-badge {
+    @apply inline-flex items-center rounded-pill font-bold uppercase shrink-0 align-middle;
+    padding: 2px 7px;
+    font-size: 10px;
+    letter-spacing: 0.4px;
+  }
+
+  .type-strength   { background: rgba(34,34,34,0.07);   @apply text-content-primary; }
+  .type-cardio     { background: rgba(193,53,21,0.08);  @apply text-content-negative; }
+  .type-bodyweight { background: rgba(0,101,79,0.08);   @apply text-content-positive; }
+  .type-duration   { background: rgba(224,121,18,0.1);  @apply text-content-caution; }
+
+  /* PR Toast */
+  .pr-toast {
+    @apply fixed top-5 left-1/2 -translate-x-1/2 bg-canvas-dark rounded-pill flex items-center gap-2 z-[2000] whitespace-nowrap;
+    padding: 10px 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  }
+
+  .pr-toast.hidden { display: none; }
+  .pr-toast-show { animation: toastIn 0.3s ease-out forwards; }
+  .pr-toast-hide { animation: toastOut 0.4s ease-in forwards; }
+
+  .pr-toast-trophy { font-size: 16px; }
+
+  .pr-toast-text {
+    @apply flex flex-col;
+    gap: 1px;
+  }
+
+  .pr-toast-title {
+    @apply font-bold text-content-inverse;
+    font-size: 13px;
+  }
+
+  .pr-toast-detail {
+    @apply font-medium;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* Routines */
+  .routines-list {
+    @apply flex flex-col gap-2;
+    padding: 16px 24px;
+  }
+
+  .routine-card {
+    @apply flex items-center gap-4 bg-surface-card rounded-xl p-4 cursor-pointer transition-opacity active:opacity-70;
+  }
+
+  .routine-card-main {
+    @apply flex flex-col flex-1 min-w-0;
+    gap: 2px;
+  }
+
+  .routine-card-name {
+    @apply font-bold text-content-primary whitespace-nowrap overflow-hidden text-ellipsis;
+    font-size: 16px;
+  }
+
+  .routine-card-name:empty::before {
+    content: 'Untitled Routine';
+    @apply text-content-disabled;
+  }
+
+  .routine-card-meta {
+    @apply font-medium text-content-secondary;
+    font-size: 13px;
+  }
+
+  .routine-card-last {
+    @apply font-medium text-content-tertiary;
+    font-size: 11px;
+  }
+
+  .routine-name-input {
+    @apply flex-1 bg-transparent border-0 outline-none font-bold text-content-primary placeholder:text-content-disabled;
+    font-family: inherit;
+    font-size: 18px;
+  }
+
+  .start-routine-btn {
+    @apply bg-surface-primary text-content-inverse border-0 rounded-pill font-bold cursor-pointer whitespace-nowrap shrink-0 transition-opacity active:opacity-75;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+
+  .routine-exercises-list {
+    @apply flex flex-col gap-2;
+    padding: 16px 24px;
+  }
+
+  .routine-exercise-card {
+    @apply bg-surface-card rounded-xl p-4;
+  }
+
+  .routine-exercise-header {
+    @apply flex items-center justify-between mb-2;
+  }
+
+  .routine-exercise-name {
+    @apply flex items-center gap-1 font-bold text-content-primary min-w-0;
+    font-size: 15px;
+  }
+
+  .routine-remove-exercise-btn {
+    @apply bg-transparent border-0 font-medium text-content-disabled cursor-pointer shrink-0 transition-colors active:text-content-negative;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .routine-remove-set-btn {
+    @apply bg-transparent border-0 text-content-disabled cursor-pointer flex items-center justify-center transition-colors active:text-content-negative;
+    padding: 4px;
+  }
+
+  .routine-add-set-btn {
+    @apply w-full bg-transparent rounded-lg font-bold text-content-secondary cursor-pointer transition-colors active:border-stroke-selected active:text-content-primary;
+    border: 1px dashed #B0B0B0;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px;
+    margin-top: 8px;
+  }
+
+  .routine-add-exercise-btn {
+    @apply bg-transparent rounded-xl font-bold text-content-secondary cursor-pointer flex items-center justify-center gap-2 transition-colors active:border-stroke-selected active:text-content-primary;
+    width: calc(100% - 48px);
+    margin: 8px 24px 24px;
+    border: 1.5px dashed #B0B0B0;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 16px;
+  }
+
+  #picker-exercise-list {
+    @apply flex-1 overflow-y-auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .added-check {
+    @apply flex items-center justify-center text-content-positive shrink-0;
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Sync Status */
+  .sync-row {
+    @apply flex items-center gap-1;
+    margin-top: 2px;
+  }
+
+  .sync-dot {
+    @apply rounded-full shrink-0 bg-content-disabled;
+    width: 6px;
+    height: 6px;
+  }
+
+  .sync-dot--synced     { @apply bg-content-positive; }
+  .sync-dot--syncing    { @apply bg-content-caution; animation: syncPulse 1.2s ease-in-out infinite; }
+  .sync-dot--error      { @apply bg-content-negative; }
+  .sync-dot--signed-out { @apply bg-content-disabled; }
+
+  .sync-label {
+    @apply font-medium text-content-tertiary;
+    font-size: 11px;
+  }
+
+  .sync-btn {
+    @apply bg-transparent border-stroke-mid border rounded-pill font-bold text-content-secondary cursor-pointer ml-1;
+    font-family: inherit;
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(-12px); }
+}
+
+@keyframes syncPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+.screen.active > * {
+  animation: fadeIn 0.2s ease-out;
+}
