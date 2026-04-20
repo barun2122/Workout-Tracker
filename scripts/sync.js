@@ -3,12 +3,12 @@
 // Leave apiKey empty (or as the placeholder) to run in localStorage-only mode.
 
 const FIREBASE_CONFIG = {
-    // apiKey: "YOUR_API_KEY",
-    // authDomain: "YOUR_PROJECT.firebaseapp.com",
-    // projectId: "YOUR_PROJECT_ID",
-    // storageBucket: "YOUR_PROJECT.appspot.com",
-    // messagingSenderId: "YOUR_SENDER_ID",
-    // appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyBp4dhOFFCOXlXM4Gl-EEopQv5JIjSkQRM",
+    authDomain: "workout-tracker-2bd9c.firebaseapp.com",
+    projectId: "workout-tracker-2bd9c",
+    storageBucket: "workout-tracker-2bd9c.firebasestorage.app",
+    messagingSenderId: "439555478744",
+    appId: "1:439555478744:web:660a73fc3ff6e13de933ad"
 };
 
 const SYNC_ENABLED = !!(FIREBASE_CONFIG.apiKey);
