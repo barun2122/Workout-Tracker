@@ -491,7 +491,7 @@ function renderBodyPartsStatus() {
         const ago  = last ? getDaysAgo(last) : 'Never';
         const cls  = last === new Date().toISOString().split('T')[0] ? 'today'
                    : (last && getDaysAgo(last) === 'Yesterday' ? 'days-ago' : '');
-        return `<div class="body-part-item" data-body-part="${bp.id}">
+        return `<div class="body-part-item${cls === 'today' ? ' trained-today' : ''}" data-body-part="${bp.id}">
             <span class="icon">${bp.icon}</span>
             <span class="name">${bp.name}</span>
             <span class="last-trained ${cls}">${ago}</span>

@@ -58,17 +58,20 @@
   }
 
   .done-btn {
-    @apply h-9 px-4 bg-surface-primary border-0 rounded-lg text-content-inverse text-sm font-bold cursor-pointer shrink-0;
+    @apply h-9 px-4 border-0 rounded-lg text-content-inverse text-sm font-bold cursor-pointer shrink-0 transition-opacity active:opacity-80;
     font-family: 'Satoshi', sans-serif;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
   }
 
   .add-set-btn {
-    @apply h-9 px-4 bg-surface-primary border-0 rounded-lg text-content-inverse text-sm font-bold cursor-pointer flex items-center gap-1 shrink-0;
+    @apply h-9 px-4 border-0 rounded-lg text-content-inverse text-sm font-bold cursor-pointer flex items-center gap-1 shrink-0 transition-opacity active:opacity-80;
     font-family: 'Satoshi', sans-serif;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
   }
 
   .add-btn {
-    @apply w-9 h-9 flex items-center justify-center bg-surface-primary border-0 rounded-lg text-content-inverse cursor-pointer shrink-0;
+    @apply w-9 h-9 flex items-center justify-center border-0 rounded-lg text-content-inverse cursor-pointer shrink-0 transition-opacity active:opacity-80;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
   }
 
   /* Bottom Navigation */
@@ -88,7 +91,7 @@
   }
 
   .nav-item.active {
-    @apply text-content-primary;
+    color: #4F46E5;
   }
 
   .nav-icon {
@@ -110,10 +113,16 @@
   }
 
   .start-workout-btn {
-    @apply w-full bg-surface-primary border-0 text-content-inverse rounded-xl font-bold cursor-pointer flex items-center justify-center gap-2 transition-opacity active:opacity-85;
+    @apply w-full border-0 text-content-inverse rounded-xl font-bold cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-[0.98] active:opacity-90;
     font-family: 'Satoshi', sans-serif;
-    font-size: 16px;
-    padding: 18px 24px;
+    font-size: 17px;
+    padding: 22px 24px;
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    box-shadow: 0 8px 28px rgba(79, 70, 229, 0.35);
+  }
+
+  .start-workout-btn:hover {
+    box-shadow: 0 10px 32px rgba(79, 70, 229, 0.45);
   }
 
   .start-workout-btn .icon {
@@ -129,8 +138,9 @@
   }
 
   .home-header-text h1 {
-    @apply text-3xl font-bold;
-    line-height: 40px;
+    @apply text-4xl font-bold;
+    line-height: 48px;
+    letter-spacing: -0.5px;
   }
 
   .home-header-text .date {
@@ -142,13 +152,22 @@
   }
 
   .stat-item {
-    @apply flex-1 bg-surface-card p-4 rounded-xl flex flex-col gap-1;
+    @apply flex-1 bg-surface-card p-4 rounded-xl flex flex-col gap-1 relative overflow-hidden;
+  }
+
+  .stat-item::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0;
+    height: 3px;
+    background: linear-gradient(90deg, #4F46E5, #7C3AED);
+    border-radius: 12px 12px 0 0;
   }
 
   .stat-value {
-    @apply block font-bold text-content-primary;
-    font-size: 36px;
+    @apply block font-bold;
+    font-size: 40px;
     line-height: 1;
+    color: #4F46E5;
   }
 
   .stat-label {
@@ -228,9 +247,14 @@
   }
 
   .body-part-item {
-    @apply bg-surface-card rounded-xl text-center cursor-pointer flex flex-col items-center transition-colors active:bg-stroke;
+    @apply bg-surface-card rounded-xl text-center cursor-pointer flex flex-col items-center transition-all active:scale-95;
     padding: 14px 4px;
     gap: 3px;
+  }
+
+  .body-part-item.trained-today {
+    background: linear-gradient(135deg, rgba(0, 101, 79, 0.08), rgba(0, 101, 79, 0.03));
+    box-shadow: inset 0 0 0 1.5px rgba(0, 101, 79, 0.2);
   }
 
   .body-part-item .icon {
@@ -251,7 +275,7 @@
     font-size: 9px;
   }
 
-  .body-part-item .last-trained.today    { @apply text-content-positive; }
+  .body-part-item .last-trained.today    { @apply text-content-positive font-bold; }
   .body-part-item .last-trained.days-ago { @apply text-content-caution; }
 
   /* Workout Screen */
@@ -264,9 +288,10 @@
   }
 
   .workout-timer {
-    @apply font-bold text-content-primary text-xl;
+    @apply font-bold text-xl;
     font-variant-numeric: tabular-nums;
     letter-spacing: 1px;
+    color: #4F46E5;
   }
 
   .body-parts-display {
@@ -309,13 +334,15 @@
 
   .body-part-tab::after {
     content: '';
-    @apply absolute bottom-0 h-[2px] bg-stroke-selected rounded-sm opacity-0 transition-opacity;
+    @apply absolute bottom-0 h-[2px] rounded-sm opacity-0 transition-opacity;
     left: 16px;
     right: 16px;
+    background: linear-gradient(90deg, #4F46E5, #7C3AED);
   }
 
   .body-part-tab.active {
-    @apply text-content-primary font-bold;
+    color: #4F46E5;
+    font-weight: 700;
   }
 
   .body-part-tab.active::after {
@@ -370,7 +397,8 @@
   }
 
   .exercise-add-btn {
-    @apply w-8 h-8 flex items-center justify-center bg-surface-primary border-0 rounded-lg text-content-inverse cursor-pointer shrink-0;
+    @apply w-8 h-8 flex items-center justify-center border-0 rounded-lg text-content-inverse cursor-pointer shrink-0 transition-opacity active:opacity-80;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
   }
 
   /* Active exercises */
@@ -466,11 +494,16 @@
   }
 
   .sets-table input {
-    @apply border-stroke border-[1.5px] rounded-lg bg-canvas text-content-primary font-medium text-center transition-colors focus:outline-none focus:border-stroke-selected;
+    @apply border-stroke border-[1.5px] rounded-lg bg-canvas text-content-primary font-medium text-center transition-colors focus:outline-none;
     font-family: 'Satoshi', sans-serif;
     width: 72px;
     padding: 10px 8px;
     font-size: 16px;
+  }
+
+  .sets-table input:focus {
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
   }
 
   .remove-set-btn {
@@ -672,7 +705,7 @@
     padding: 16px;
   }
 
-  .btn-primary   { @apply bg-surface-primary text-content-inverse; }
+  .btn-primary   { @apply text-content-inverse border-0; background: linear-gradient(135deg, #4F46E5, #7C3AED); }
   .btn-secondary { @apply bg-surface-card text-content-primary; }
 
   /* Body Part Chips */
@@ -899,10 +932,11 @@
   }
 
   .start-routine-btn {
-    @apply bg-surface-primary text-content-inverse border-0 rounded-pill font-bold cursor-pointer whitespace-nowrap shrink-0 transition-opacity active:opacity-75;
+    @apply text-content-inverse border-0 rounded-pill font-bold cursor-pointer whitespace-nowrap shrink-0 transition-opacity active:opacity-75;
     font-family: inherit;
     font-size: 13px;
     padding: 8px 16px;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
   }
 
   .routine-exercises-list {

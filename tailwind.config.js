@@ -26,6 +26,12 @@ module.exports = {
           caution:  '#E07912',
           negative: '#C13515',
         },
+        // Brand accent color — indigo
+        accent: {
+          DEFAULT: '#4F46E5',
+          light:   '#818CF8',
+          dark:    '#4338CA',
+        },
         // Border colors — using 'stroke' to avoid conflict with Tailwind's border-width utilities
         stroke: {
           DEFAULT:  '#E8E8E8',
