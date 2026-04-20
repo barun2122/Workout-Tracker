@@ -96,10 +96,13 @@ let selectedBodyParts    = new Set();
 let workoutStartTime     = null;
 let workoutTimerInterval = null;
 let prToastTimeout       = null;
+let routines             = JSON.parse(localStorage.getItem('routines')) || [];
+let currentRoutineId     = null;
 
 // ── Persistence ──────────────────────────────────────────────────────────────
-function saveExercises()     { localStorage.setItem('exercises',      JSON.stringify(exercises));      }
-function saveWorkoutHistory(){ localStorage.setItem('workoutHistory', JSON.stringify(workoutHistory)); }
+function saveExercises()     { localStorage.setItem('exercises',      JSON.stringify(exercises));      if (typeof syncModule !== 'undefined') syncModule.push('exercises'); }
+function saveWorkoutHistory(){ localStorage.setItem('workoutHistory', JSON.stringify(workoutHistory)); if (typeof syncModule !== 'undefined') syncModule.push('workoutHistory'); }
+function saveRoutines()      { localStorage.setItem('routines',       JSON.stringify(routines));       if (typeof syncModule !== 'undefined') syncModule.push('routines'); }
 function generateId()        { return Date.now().toString(36) + Math.random().toString(36).substr(2);  }
 
 // ── Migration ────────────────────────────────────────────────────────────────
@@ -441,6 +444,8 @@ function showScreen(screenId) {
     if (screenId === 'progress-screen') renderProgress();
     if (screenId === 'library-screen')  renderLibrary();
     if (screenId === 'workout-screen' && currentWorkout) renderActiveExercises();
+    if (screenId === 'routines-screen')       renderRoutines();
+    if (screenId === 'routine-detail-screen') renderRoutineDetail();
 }
 
 // ── Home ──────────────────────────────────────────────────────────────────────
@@ -876,6 +881,216 @@ function importInitialData() {
     saveWorkoutHistory();
 }
 
+// ── Routines ──────────────────────────────────────────────────────────────────
+
+function renderRoutines() {
+    const c = document.getElementById('routines-list');
+    if (!routines.length) {
+        c.innerHTML = `<div class="empty-state"><p>No routines yet</p><p style="font-size:13px;margin-top:4px;color:var(--content-tertiary)">Tap + to create one</p></div>`;
+        return;
+    }
+    c.innerHTML = routines.map(r => {
+        const bodyParts = [...new Set(
+            r.exercises.map(e => exercises.find(ex => ex.id === e.exerciseId)?.bodyPart).filter(Boolean)
+        )];
+        const lastUsed = workoutHistory
+            .filter(w => w.routineId === r.id)
+            .sort((a,b) => new Date(b.date) - new Date(a.date))[0];
+        return `<div class="routine-card" data-routine-id="${r.id}">
+            <div class="routine-card-main">
+                <span class="routine-card-name">${r.name || 'Untitled Routine'}</span>
+                <span class="routine-card-meta">
+                    ${r.exercises.length} exercise${r.exercises.length !== 1 ? 's' : ''}
+                    ${bodyParts.length ? ' · ' + bodyParts.map(bp => BODY_PARTS.find(b => b.id === bp)?.icon || '').join('') : ''}
+                </span>
+                ${lastUsed ? `<span class="routine-card-last">Last used ${getDaysAgo(lastUsed.date)}</span>` : ''}
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--content-disabled);flex-shrink:0"><path d="m9 18 6-6-6-6"/></svg>
+        </div>`;
+    }).join('');
+    c.querySelectorAll('.routine-card').forEach(card =>
+        card.addEventListener('click', () => openRoutineDetail(card.dataset.routineId)));
+}
+
+function createRoutine() {
+    const r = { id: generateId(), name: '', createdAt: new Date().toISOString(), exercises: [] };
+    routines.push(r);
+    saveRoutines();
+    openRoutineDetail(r.id);
+}
+
+function openRoutineDetail(routineId) {
+    currentRoutineId = routineId;
+    showScreen('routine-detail-screen');
+}
+
+function renderRoutineDetail() {
+    const routine = routines.find(r => r.id === currentRoutineId);
+    if (!routine) { showScreen('routines-screen'); return; }
+    document.getElementById('routine-name-input').value = routine.name;
+    const c = document.getElementById('routine-exercises-list');
+    if (!routine.exercises.length) {
+        c.innerHTML = `<div class="empty-state" style="padding:var(--sp-9) 0"><p>No exercises yet</p><p style="font-size:13px;margin-top:4px;color:var(--content-tertiary)">Tap "Add Exercise" below</p></div>`;
+    } else {
+        c.innerHTML = routine.exercises.map((re, idx) => {
+            const d    = exercises.find(e => e.id === re.exerciseId);
+            const bp   = BODY_PARTS.find(b => b.id === d?.bodyPart);
+            const type = d?.type || 'strength';
+            const headers = getTableHeaders(type);
+            const setsHtml = re.sets.map((set, si) => `<tr>
+                <td>${si + 1}</td>
+                ${renderRoutineSetInputs(set, idx, si, type)}
+                <td>${re.sets.length > 1
+                    ? `<button class="remove-set-btn routine-remove-set-btn" data-ex="${idx}" data-set="${si}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+                       </button>`
+                    : ''}</td>
+            </tr>`).join('');
+            return `<div class="routine-exercise-card">
+                <div class="routine-exercise-header">
+                    <div class="routine-exercise-name">
+                        <span class="ex-icon">${bp?.icon || ''}</span>
+                        <span>${d?.name || 'Unknown'}</span>
+                        ${getTypeBadge(type)}
+                    </div>
+                    <button class="routine-remove-exercise-btn" data-ex="${idx}">Remove</button>
+                </div>
+                <div class="sets-table-container" style="margin-bottom:var(--sp-2)">
+                    <table class="sets-table">
+                        <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+                        <tbody class="routine-sets-tbody">${setsHtml}</tbody>
+                    </table>
+                </div>
+                <button class="routine-add-set-btn" data-ex="${idx}">+ Add Set</button>
+            </div>`;
+        }).join('');
+    }
+    bindRoutineDetailEvents();
+}
+
+function renderRoutineSetInputs(set, exIdx, setIdx, type) {
+    const inp = (field, val, ph, mode) =>
+        `<td><input type="number" class="rset-input" data-ex="${exIdx}" data-set="${setIdx}" data-field="${field}" value="${val || ''}" placeholder="${ph}" inputmode="${mode}"></td>`;
+    switch (type) {
+        case 'cardio':     return inp('duration', set.duration, '0', 'decimal') + inp('distance', set.distance, '0.0', 'decimal');
+        case 'bodyweight': return inp('reps', set.reps, '0', 'numeric');
+        case 'duration':   return inp('duration', set.duration, '0', 'decimal');
+        default:           return inp('weight', set.weight, '0', 'decimal') + inp('reps', set.reps, '0', 'numeric');
+    }
+}
+
+function bindRoutineDetailEvents() {
+    const routine = routines.find(r => r.id === currentRoutineId);
+    if (!routine) return;
+    const nameInput = document.getElementById('routine-name-input');
+    nameInput.oninput = () => { routine.name = nameInput.value; saveRoutines(); };
+    const c = document.getElementById('routine-exercises-list');
+    c.querySelectorAll('.rset-input').forEach(inp => {
+        inp.onchange = () => {
+            routine.exercises[+inp.dataset.ex].sets[+inp.dataset.set][inp.dataset.field] = inp.value;
+            saveRoutines();
+        };
+    });
+    c.querySelectorAll('.routine-remove-set-btn').forEach(btn => {
+        btn.onclick = () => {
+            routine.exercises[+btn.dataset.ex].sets.splice(+btn.dataset.set, 1);
+            saveRoutines(); renderRoutineDetail();
+        };
+    });
+    c.querySelectorAll('.routine-add-set-btn').forEach(btn => {
+        btn.onclick = () => {
+            const ex   = routine.exercises[+btn.dataset.ex];
+            const type = getExerciseType(ex.exerciseId);
+            const last = ex.sets[ex.sets.length - 1] || {};
+            ex.sets.push({ ...getDefaultSet(type), ...last });
+            saveRoutines(); renderRoutineDetail();
+        };
+    });
+    c.querySelectorAll('.routine-remove-exercise-btn').forEach(btn => {
+        btn.onclick = () => {
+            routine.exercises.splice(+btn.dataset.ex, 1);
+            saveRoutines(); renderRoutineDetail();
+        };
+    });
+}
+
+function openRoutineExercisePicker() {
+    renderPickerTabs('all');
+    document.getElementById('routine-exercise-picker-modal').classList.remove('hidden');
+}
+
+function renderPickerTabs(filter) {
+    const tabs = document.getElementById('picker-bp-tabs');
+    tabs.innerHTML = `<button class="body-part-tab ${filter === 'all' ? 'active' : ''}" data-filter="all">All</button>
+        ${BODY_PARTS.map(bp => `<button class="body-part-tab ${filter === bp.id ? 'active' : ''}" data-filter="${bp.id}">
+            <span class="tab-icon">${bp.icon}</span>
+        </button>`).join('')}`;
+    tabs.querySelectorAll('.body-part-tab').forEach(t =>
+        t.addEventListener('click', () => renderPickerTabs(t.dataset.filter)));
+    renderPickerList(filter);
+}
+
+function renderPickerList(filter) {
+    const routine = routines.find(r => r.id === currentRoutineId);
+    const c = document.getElementById('picker-exercise-list');
+    const list = filter === 'all' ? exercises : exercises.filter(e => e.bodyPart === filter);
+    c.innerHTML = list.map(ex => {
+        const bp = BODY_PARTS.find(b => b.id === ex.bodyPart);
+        const inRoutine = routine?.exercises.some(re => re.exerciseId === ex.id);
+        return `<div class="exercise-item">
+            <div>
+                <div class="exercise-name-row"><span class="name">${ex.name}</span>${getTypeBadge(ex.type || 'strength')}</div>
+                <span class="body-part-tag">${bp?.icon} ${bp?.name}</span>
+            </div>
+            ${inRoutine
+                ? `<span class="added-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>`
+                : `<button class="exercise-add-btn" data-exercise-id="${ex.id}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+                   </button>`}
+        </div>`;
+    }).join('');
+    c.querySelectorAll('.exercise-add-btn').forEach(btn =>
+        btn.addEventListener('click', e => { e.stopPropagation(); addExerciseToRoutine(btn.dataset.exerciseId); }));
+}
+
+function addExerciseToRoutine(exerciseId) {
+    const routine = routines.find(r => r.id === currentRoutineId);
+    if (!routine || routine.exercises.some(re => re.exerciseId === exerciseId)) return;
+    const d    = exercises.find(e => e.id === exerciseId);
+    const type = d?.type || 'strength';
+    // Seed from last actual performance; fallback to 3 blank sets
+    const prev = getPreviousSession(exerciseId);
+    const sets = prev ? prev.sets.map(s => ({ ...s })) : [getDefaultSet(type), getDefaultSet(type), getDefaultSet(type)];
+    routine.exercises.push({ exerciseId, sets });
+    saveRoutines();
+    renderPickerList(document.querySelector('#picker-bp-tabs .body-part-tab.active')?.dataset.filter || 'all');
+    renderRoutineDetail();
+}
+
+function startWorkoutFromRoutine() {
+    const routine = routines.find(r => r.id === currentRoutineId);
+    if (!routine) return;
+    const today    = new Date().toISOString().split('T')[0];
+    const existing = workoutHistory.find(w => w.date === today);
+    if (existing) {
+        if (!confirm('You already have a workout today. Start fresh from this routine?')) return;
+    }
+    const bodyParts = [...new Set(
+        routine.exercises.map(e => exercises.find(ex => ex.id === e.exerciseId)?.bodyPart).filter(Boolean)
+    )];
+    currentWorkout = {
+        id: generateId(), date: today, routineId: routine.id,
+        bodyParts, duration: 0,
+        exercises: routine.exercises.map(re => {
+            const prev = getPreviousSession(re.exerciseId);
+            return { exerciseId: re.exerciseId, sets: prev ? prev.sets.map(s => ({ ...s })) : re.sets.map(s => ({ ...s })) };
+        })
+    };
+    startWorkoutTimer();
+    showScreen('workout-screen');
+    renderWorkoutScreen();
+}
+
 // ── Boot ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     importInitialData();
@@ -903,6 +1118,28 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('cancel-add-exercise').addEventListener('click', hideAddExerciseModal);
     document.getElementById('new-exercise-form').addEventListener('submit',  addNewExercise);
     document.getElementById('add-exercise-modal').addEventListener('click', e => { if (e.target.id === 'add-exercise-modal') hideAddExerciseModal(); });
+
+    // Routines
+    document.getElementById('add-routine-btn').addEventListener('click', createRoutine);
+    document.getElementById('back-to-routines').addEventListener('click', () => showScreen('routines-screen'));
+    document.getElementById('start-routine-btn').addEventListener('click', startWorkoutFromRoutine);
+    document.getElementById('routine-add-exercise-btn').addEventListener('click', openRoutineExercisePicker);
+    document.getElementById('cancel-routine-picker').addEventListener('click', () =>
+        document.getElementById('routine-exercise-picker-modal').classList.add('hidden'));
+    document.getElementById('routine-exercise-picker-modal').addEventListener('click', e => {
+        if (e.target.id === 'routine-exercise-picker-modal')
+            document.getElementById('routine-exercise-picker-modal').classList.add('hidden');
+    });
+
+    // Sync
+    document.getElementById('sync-btn')?.addEventListener('click', () =>
+        typeof syncModule !== 'undefined' && syncModule.toggleAuth());
+    document.addEventListener('sync:dataUpdated', e => {
+        const { collection, items } = e.detail;
+        if (collection === 'exercises')      { exercises      = items; }
+        if (collection === 'workoutHistory') { workoutHistory = items; renderHome(); }
+        if (collection === 'routines')       { routines       = items; renderRoutines(); }
+    });
 
     renderHome();
 });

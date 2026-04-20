@@ -1360,6 +1360,260 @@ body {
     to   { opacity: 0; transform: translateX(-50%) translateY(-12px); }
 }
 
+/* ─── Routines ────────────────────────────────────────────────────────────── */
+.routines-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    padding: var(--sp-4) var(--sp-6);
+}
+
+.routine-card {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    background: var(--surface-card);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.routine-card:active { opacity: 0.7; }
+
+.routine-card-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.routine-card-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--content-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.routine-card-name:empty::before { content: 'Untitled Routine'; color: var(--content-disabled); }
+
+.routine-card-meta {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--content-secondary);
+}
+
+.routine-card-last {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--content-tertiary);
+}
+
+/* Routine detail screen */
+.routine-detail-header {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-4) var(--sp-6);
+    min-height: 56px;
+    border-bottom: 1px solid var(--border);
+}
+
+.routine-name-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--content-primary);
+}
+.routine-name-input::placeholder { color: var(--content-disabled); }
+
+.start-routine-btn {
+    background: var(--surface-primary);
+    color: var(--content-inverse);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: var(--sp-2) var(--sp-4);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+}
+.start-routine-btn:active { opacity: 0.75; }
+
+.routine-exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    padding: var(--sp-4) var(--sp-6);
+}
+
+.routine-exercise-card {
+    background: var(--surface-card);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+}
+
+.routine-exercise-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--sp-2);
+}
+
+.routine-exercise-name {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--content-primary);
+    min-width: 0;
+}
+
+.routine-remove-exercise-btn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--content-disabled);
+    cursor: pointer;
+    padding: var(--sp-1) var(--sp-2);
+    flex-shrink: 0;
+    transition: color 0.15s;
+}
+.routine-remove-exercise-btn:active { color: var(--content-negative); }
+
+.routine-remove-set-btn {
+    background: none;
+    border: none;
+    color: var(--content-disabled);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s;
+}
+.routine-remove-set-btn:active { color: var(--content-negative); }
+
+.routine-add-set-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed var(--border-secondary);
+    border-radius: var(--radius-sm);
+    padding: var(--sp-2);
+    margin-top: var(--sp-2);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--content-secondary);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+.routine-add-set-btn:active { border-color: var(--border-selected); color: var(--content-primary); }
+
+.routine-add-exercise-btn {
+    width: calc(100% - var(--sp-12));
+    margin: var(--sp-2) var(--sp-6) var(--sp-6);
+    background: transparent;
+    border: 1.5px dashed var(--border-secondary);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--content-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    transition: border-color 0.15s, color 0.15s;
+}
+.routine-add-exercise-btn:active { border-color: var(--border-selected); color: var(--content-primary); }
+
+/* Exercise picker modal (reused in routines) */
+#routine-exercise-picker-modal .modal-sheet {
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+#picker-exercise-list {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.added-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: var(--content-positive);
+    flex-shrink: 0;
+}
+
+/* 5-tab nav tightening */
+nav .nav-item {
+    padding: var(--sp-1) var(--sp-2);
+}
+nav .nav-item span:last-child {
+    font-size: 10px;
+}
+
+/* ─── Sync Status ─────────────────────────────────────────────────────────── */
+.sync-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    margin-top: 2px;
+}
+
+.sync-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--content-disabled);
+}
+.sync-dot--synced    { background: var(--content-positive); }
+.sync-dot--syncing   { background: var(--content-caution); animation: syncPulse 1.2s ease-in-out infinite; }
+.sync-dot--error     { background: var(--content-negative); }
+.sync-dot--signed-out{ background: var(--content-disabled); }
+
+@keyframes syncPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+}
+
+.sync-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--content-tertiary);
+}
+
+.sync-btn {
+    background: none;
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-pill);
+    padding: 2px var(--sp-2);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--content-secondary);
+    cursor: pointer;
+    margin-left: var(--sp-1);
+}
+
 /* ─── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
