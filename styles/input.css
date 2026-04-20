@@ -1,5 +1,5 @@
 /* ─── Font ───────────────────────────────────────────────────────────────── */
-@import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,6 +9,7 @@
 @layer base {
   *, *::before, *::after {
     -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
   }
 
   html, body {
@@ -16,24 +17,30 @@
   }
 
   body {
-    font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
-    @apply antialiased bg-canvas text-content-primary;
+    font-family: 'Outfit', sans-serif;
+    background: #F0F0F0;
+    color: #121212;
     min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
 /* ─── Components ─────────────────────────────────────────────────────────── */
 @layer components {
 
-  /* App Shell */
+  /* ── App Shell ───────────────────────────────────────────────────────────── */
+
   .app-container {
-    @apply flex flex-col relative mx-auto bg-canvas;
+    @apply flex flex-col relative mx-auto;
     height: 100dvh;
     max-width: 500px;
+    background: #F0F0F0;
   }
 
   .screen {
-    @apply hidden flex-col overflow-y-auto px-6 pb-4;
+    @apply hidden flex-col overflow-y-auto pb-4;
+    padding-left: 16px;
+    padding-right: 16px;
     height: calc(100dvh - 64px);
     overscroll-behavior: contain;
   }
@@ -42,56 +49,91 @@
     @apply flex;
   }
 
-  /* Top App Bar */
+  /* ── Top App Bar ─────────────────────────────────────────────────────────── */
+
   .screen-header {
-    @apply flex items-center justify-between gap-2 shrink-0 mb-6;
+    @apply flex items-center justify-between gap-2 shrink-0 mb-5;
     min-height: 56px;
   }
 
   .screen-header h1 {
-    @apply text-xl font-bold flex-1;
-    line-height: 28px;
+    @apply flex-1 font-black uppercase;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
   }
 
   .back-btn {
-    @apply w-9 h-9 flex items-center justify-center bg-surface-card border-0 rounded-lg text-content-primary cursor-pointer shrink-0;
+    @apply w-9 h-9 flex items-center justify-center bg-white border-2 border-foreground cursor-pointer shrink-0 transition-all;
+    box-shadow: 2px 2px 0px 0px #121212;
+  }
+
+  .back-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
 
   .done-btn {
-    @apply h-9 px-4 border-0 rounded-lg text-content-inverse text-sm font-bold cursor-pointer shrink-0 transition-opacity active:opacity-80;
-    font-family: 'Satoshi', sans-serif;
-    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    @apply h-9 px-4 bg-b-red border-2 border-foreground text-white text-sm font-bold uppercase cursor-pointer shrink-0 tracking-wide transition-all;
+    font-family: 'Outfit', sans-serif;
+    box-shadow: 3px 3px 0px 0px #121212;
+  }
+
+  .done-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
   }
 
   .add-set-btn {
-    @apply h-9 px-4 border-0 rounded-lg text-content-inverse text-sm font-bold cursor-pointer flex items-center gap-1 shrink-0 transition-opacity active:opacity-80;
-    font-family: 'Satoshi', sans-serif;
-    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    @apply h-9 px-4 bg-b-red border-2 border-foreground text-white text-sm font-bold uppercase cursor-pointer flex items-center gap-1 shrink-0 tracking-wide transition-all;
+    font-family: 'Outfit', sans-serif;
+    box-shadow: 3px 3px 0px 0px #121212;
+  }
+
+  .add-set-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
   }
 
   .add-btn {
-    @apply w-9 h-9 flex items-center justify-center border-0 rounded-lg text-content-inverse cursor-pointer shrink-0 transition-opacity active:opacity-80;
-    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    @apply w-9 h-9 flex items-center justify-center bg-b-red border-2 border-foreground text-white cursor-pointer shrink-0 transition-all;
+    box-shadow: 3px 3px 0px 0px #121212;
   }
 
-  /* Bottom Navigation */
+  .add-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+  }
+
+  /* ── Bottom Navigation ───────────────────────────────────────────────────── */
+
   .bottom-nav {
-    @apply fixed bottom-0 left-0 right-0 mx-auto bg-canvas flex justify-around z-[100];
+    @apply fixed bottom-0 left-0 right-0 mx-auto flex justify-around z-[100];
     max-width: 500px;
-    border-top: 1px solid #E8E8E8;
+    background: #121212;
+    border-top: 4px solid #121212;
     padding-top: 4px;
     padding-bottom: max(8px, env(safe-area-inset-bottom));
     height: 64px;
   }
 
   .nav-item {
-    @apply flex flex-col items-center gap-[3px] bg-transparent border-0 text-content-disabled cursor-pointer transition-colors flex-1;
-    font-family: 'Satoshi', sans-serif;
+    @apply flex flex-col items-center gap-[2px] bg-transparent border-0 text-white cursor-pointer transition-colors flex-1 relative;
+    font-family: 'Outfit', sans-serif;
     padding: 4px 8px;
+    opacity: 0.45;
   }
 
   .nav-item.active {
-    color: #4F46E5;
+    opacity: 1;
+  }
+
+  .nav-item.active::before {
+    content: '';
+    @apply absolute top-0 left-1/2 -translate-x-1/2;
+    width: 24px;
+    height: 3px;
+    background: #D02020;
   }
 
   .nav-icon {
@@ -99,99 +141,119 @@
   }
 
   .nav-icon svg {
-    @apply w-[22px] h-[22px];
+    @apply w-[20px] h-[20px];
   }
 
   .nav-item span:last-child {
-    @apply font-bold;
-    font-size: 10px;
+    @apply font-bold uppercase;
+    font-size: 9px;
+    letter-spacing: 0.08em;
   }
 
-  /* Home Screen */
+  /* ── Home Screen ─────────────────────────────────────────────────────────── */
+
+  .home-header {
+    @apply flex-col items-start;
+    gap: 2px;
+    height: auto;
+    padding-top: 20px;
+    margin-bottom: 16px;
+    border-bottom: 4px solid #121212;
+    padding-bottom: 16px;
+  }
+
+  .home-header-text h1 {
+    @apply font-black uppercase;
+    font-size: 42px;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .home-header-text .date {
+    @apply block font-bold uppercase;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #555555;
+    margin-top: 4px;
+  }
+
   .quick-start {
     @apply mb-4;
   }
 
   .start-workout-btn {
-    @apply w-full border-0 text-content-inverse rounded-xl font-bold cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-[0.98] active:opacity-90;
-    font-family: 'Satoshi', sans-serif;
-    font-size: 17px;
-    padding: 22px 24px;
-    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-    box-shadow: 0 8px 28px rgba(79, 70, 229, 0.35);
+    @apply w-full bg-b-red border-2 border-foreground text-white font-black uppercase cursor-pointer flex items-center justify-center gap-3 transition-all;
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    padding: 20px 24px;
+    box-shadow: 5px 5px 0px 0px #121212;
   }
 
-  .start-workout-btn:hover {
-    box-shadow: 0 10px 32px rgba(79, 70, 229, 0.45);
+  .start-workout-btn:active {
+    transform: translate(5px, 5px);
+    box-shadow: none;
   }
 
   .start-workout-btn .icon {
     @apply flex items-center;
   }
 
-  .home-header {
-    @apply flex-col items-start;
-    gap: 4px;
-    height: auto;
-    padding-top: 16px;
-    margin-bottom: 16px;
-  }
-
-  .home-header-text h1 {
-    @apply text-4xl font-bold;
-    line-height: 48px;
-    letter-spacing: -0.5px;
-  }
-
-  .home-header-text .date {
-    @apply block text-sm font-medium text-content-secondary;
-  }
-
   .stats-row {
-    @apply flex gap-2 mb-6;
+    @apply flex gap-3 mb-5;
   }
 
   .stat-item {
-    @apply flex-1 bg-surface-card p-4 rounded-xl flex flex-col gap-1 relative overflow-hidden;
+    @apply flex-1 p-4 border-2 border-foreground flex flex-col gap-1 relative overflow-hidden;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0px 0px #121212;
   }
 
-  .stat-item::before {
+  /* Color-block corner decoration */
+  .stat-item:first-child::after {
     content: '';
-    @apply absolute top-0 left-0 right-0;
-    height: 3px;
-    background: linear-gradient(90deg, #4F46E5, #7C3AED);
-    border-radius: 12px 12px 0 0;
+    @apply absolute top-0 right-0 w-4 h-4 bg-b-yellow;
+  }
+
+  .stat-item:last-child::after {
+    content: '';
+    @apply absolute top-0 right-0 w-4 h-4 bg-b-blue;
   }
 
   .stat-value {
-    @apply block font-bold;
-    font-size: 40px;
+    @apply block font-black;
+    font-size: 48px;
     line-height: 1;
-    color: #4F46E5;
+    color: #121212;
   }
 
   .stat-label {
-    @apply text-xs font-medium text-content-secondary;
+    @apply font-bold uppercase text-content-secondary;
+    font-size: 10px;
+    letter-spacing: 0.1em;
   }
 
   .section {
-    @apply mb-6;
+    @apply mb-5;
   }
 
   .section h2 {
-    @apply font-bold text-content-tertiary uppercase mb-2;
+    @apply font-black uppercase mb-3 border-b-2 border-foreground pb-1;
     font-size: 11px;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.12em;
   }
 
   .last-workout-card {
-    @apply bg-surface-card rounded-xl p-4;
+    @apply p-4 border-2 border-foreground;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0px 0px #121212;
   }
 
   .last-workout-card.empty {
-    @apply text-center text-content-tertiary font-medium;
+    @apply text-center text-content-tertiary font-bold uppercase;
     padding: 36px 24px;
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: 0.06em;
   }
 
   .last-workout-header {
@@ -199,14 +261,16 @@
   }
 
   .last-workout-date {
-    @apply font-bold;
-    font-size: 15px;
+    @apply font-black uppercase;
+    font-size: 14px;
+    letter-spacing: 0.04em;
     line-height: 20px;
   }
 
   .last-workout-meta {
-    @apply font-medium text-content-secondary ml-2;
-    font-size: 12px;
+    @apply font-bold text-content-secondary;
+    font-size: 11px;
+    letter-spacing: 0.04em;
   }
 
   .last-workout-body-parts {
@@ -223,7 +287,7 @@
 
   .last-workout-exercise {
     @apply flex justify-between items-center py-[10px];
-    border-bottom: 1px solid #E8E8E8;
+    border-bottom: 1px solid #E0E0E0;
   }
 
   .last-workout-exercise:last-child {
@@ -231,8 +295,8 @@
   }
 
   .last-workout-exercise-name {
-    @apply font-medium;
-    font-size: 14px;
+    @apply font-bold;
+    font-size: 13px;
   }
 
   .last-workout-exercise-details {
@@ -247,14 +311,21 @@
   }
 
   .body-part-item {
-    @apply bg-surface-card rounded-xl text-center cursor-pointer flex flex-col items-center transition-all active:scale-95;
-    padding: 14px 4px;
+    @apply border-2 border-foreground text-center cursor-pointer flex flex-col items-center transition-all;
+    padding: 12px 4px;
     gap: 3px;
+    background: #FFFFFF;
+    box-shadow: 3px 3px 0px 0px #121212;
+  }
+
+  .body-part-item:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
   }
 
   .body-part-item.trained-today {
-    background: linear-gradient(135deg, rgba(0, 101, 79, 0.08), rgba(0, 101, 79, 0.03));
-    box-shadow: inset 0 0 0 1.5px rgba(0, 101, 79, 0.2);
+    background: #F0C020;
+    border-color: #121212;
   }
 
   .body-part-item .icon {
@@ -262,25 +333,32 @@
   }
 
   .body-part-item .icon svg {
-    @apply w-[22px] h-[22px];
+    @apply w-[20px] h-[20px];
   }
 
   .body-part-item .name {
-    @apply font-bold text-content-primary;
-    font-size: 10px;
+    @apply font-black uppercase;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: #121212;
   }
 
   .body-part-item .last-trained {
-    @apply font-medium text-content-tertiary;
-    font-size: 9px;
+    @apply font-bold uppercase;
+    font-size: 8px;
+    letter-spacing: 0.04em;
+    color: #888888;
   }
 
-  .body-part-item .last-trained.today    { @apply text-content-positive font-bold; }
-  .body-part-item .last-trained.days-ago { @apply text-content-caution; }
+  .body-part-item .last-trained.today    { color: #121212; font-weight: 900; }
+  .body-part-item .last-trained.days-ago { color: #C07010; }
 
-  /* Workout Screen */
+  /* ── Workout Screen ──────────────────────────────────────────────────────── */
+
   .workout-summary {
-    @apply bg-surface-card rounded-xl p-4 mb-4 shrink-0;
+    @apply p-4 mb-4 border-2 border-foreground shrink-0;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0px 0px #121212;
   }
 
   .workout-summary-top {
@@ -288,10 +366,12 @@
   }
 
   .workout-timer {
-    @apply font-bold text-xl;
+    @apply font-black;
+    font-size: 36px;
     font-variant-numeric: tabular-nums;
-    letter-spacing: 1px;
-    color: #4F46E5;
+    letter-spacing: 0.04em;
+    color: #D02020;
+    line-height: 1;
   }
 
   .body-parts-display {
@@ -303,21 +383,21 @@
   }
 
   .bp-icon svg {
-    @apply w-[22px] h-[22px] text-content-secondary;
+    @apply w-[20px] h-[20px] text-content-secondary;
   }
 
   .body-parts-display:empty::before {
-    content: 'No muscles selected';
-    @apply text-sm font-medium text-content-tertiary;
+    content: 'NO MUSCLES SELECTED';
+    @apply font-bold uppercase text-content-tertiary;
+    font-size: 11px;
+    letter-spacing: 0.08em;
   }
 
   /* Tabs */
   .body-part-tabs {
     @apply flex overflow-x-auto shrink-0;
     -webkit-overflow-scrolling: touch;
-    gap: 0;
-    border-bottom: 1px solid #E8E8E8;
-    margin-bottom: 0;
+    border-bottom: 3px solid #121212;
     scrollbar-width: none;
   }
 
@@ -326,23 +406,23 @@
   }
 
   .body-part-tab {
-    @apply shrink-0 h-11 bg-transparent border-0 text-content-secondary font-medium cursor-pointer flex items-center gap-1 relative whitespace-nowrap transition-colors;
-    font-family: 'Satoshi', sans-serif;
-    font-size: 14px;
-    padding: 0 16px;
+    @apply shrink-0 h-11 bg-transparent border-0 text-content-secondary font-bold uppercase cursor-pointer flex items-center gap-1 relative whitespace-nowrap transition-colors;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    padding: 0 14px;
   }
 
   .body-part-tab::after {
     content: '';
-    @apply absolute bottom-0 h-[2px] rounded-sm opacity-0 transition-opacity;
-    left: 16px;
-    right: 16px;
-    background: linear-gradient(90deg, #4F46E5, #7C3AED);
+    @apply absolute bottom-0 left-0 right-0 opacity-0 transition-opacity;
+    height: 3px;
+    background: #D02020;
   }
 
   .body-part-tab.active {
-    color: #4F46E5;
-    font-weight: 700;
+    color: #D02020;
+    font-weight: 900;
   }
 
   .body-part-tab.active::after {
@@ -363,9 +443,9 @@
   }
 
   .exercise-item {
-    @apply flex justify-between items-center py-4 cursor-pointer;
-    min-height: 64px;
-    border-bottom: 1px solid #E8E8E8;
+    @apply flex justify-between items-center py-3 cursor-pointer;
+    min-height: 60px;
+    border-bottom: 2px solid #E0E0E0;
   }
 
   .exercise-item:last-child {
@@ -377,14 +457,16 @@
   }
 
   .exercise-item .name {
-    @apply text-content-primary font-medium;
-    font-size: 15px;
+    @apply font-bold;
+    color: #121212;
+    font-size: 14px;
     line-height: 20px;
   }
 
   .exercise-item .body-part-tag {
-    @apply font-medium text-content-tertiary inline-flex items-center;
-    font-size: 11px;
+    @apply font-bold uppercase text-content-tertiary inline-flex items-center;
+    font-size: 10px;
+    letter-spacing: 0.06em;
     gap: 3px;
   }
 
@@ -397,23 +479,35 @@
   }
 
   .exercise-add-btn {
-    @apply w-8 h-8 flex items-center justify-center border-0 rounded-lg text-content-inverse cursor-pointer shrink-0 transition-opacity active:opacity-80;
-    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    @apply w-8 h-8 flex items-center justify-center bg-b-red border-2 border-foreground text-white cursor-pointer shrink-0 transition-all;
+    box-shadow: 2px 2px 0px 0px #121212;
+  }
+
+  .exercise-add-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
 
   /* Active exercises */
   .current-exercises {
-    @apply mt-6 shrink-0;
+    @apply mt-5 shrink-0;
   }
 
   .current-exercises h3 {
-    @apply font-bold text-content-tertiary uppercase mb-2;
+    @apply font-black uppercase mb-3 border-b-2 border-foreground pb-1;
     font-size: 11px;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.12em;
   }
 
   .active-exercise-card {
-    @apply bg-surface-card rounded-xl p-4 mb-2 cursor-pointer transition-colors active:bg-stroke;
+    @apply p-4 mb-3 border-2 border-foreground cursor-pointer transition-all;
+    background: #FFFFFF;
+    box-shadow: 3px 3px 0px 0px #121212;
+  }
+
+  .active-exercise-card:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
   }
 
   .active-exercise-header {
@@ -421,7 +515,9 @@
   }
 
   .active-exercise-name {
-    @apply text-[15px] font-bold flex items-center gap-2;
+    @apply font-black uppercase flex items-center gap-2;
+    font-size: 13px;
+    letter-spacing: 0.04em;
   }
 
   .ex-icon {
@@ -429,32 +525,40 @@
   }
 
   .ex-icon svg {
-    @apply w-[18px] h-[18px] text-content-secondary;
+    @apply w-[16px] h-[16px] text-content-secondary;
   }
 
   .active-exercise-sets {
-    @apply text-xs font-medium text-content-secondary;
+    @apply font-bold uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: #888888;
   }
 
   .active-sets-summary {
-    @apply text-[13px] font-medium text-content-tertiary;
+    @apply font-medium text-content-tertiary;
+    font-size: 12px;
   }
 
   .empty-state {
-    @apply text-center text-content-tertiary font-medium;
+    @apply text-center text-content-tertiary font-bold uppercase;
     padding: 36px 24px;
-    font-size: 14px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    border: 2px dashed #AAAAAA;
   }
 
-  /* Exercise Detail Screen */
+  /* ── Exercise Detail Screen ──────────────────────────────────────────────── */
+
   .exercise-header {
     @apply mb-4 shrink-0;
   }
 
   .body-part-badge {
-    @apply inline-flex items-center gap-1 bg-surface-card rounded-pill border border-stroke font-medium text-content-secondary;
-    padding: 6px 8px;
-    font-size: 13px;
+    @apply inline-flex items-center gap-1 bg-b-yellow border-2 border-foreground font-bold uppercase;
+    padding: 4px 10px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
   }
 
   .badge-icon {
@@ -462,12 +566,14 @@
   }
 
   .badge-icon svg {
-    @apply w-[15px] h-[15px] text-content-secondary;
+    @apply w-[14px] h-[14px];
   }
 
   /* Sets Table */
   .sets-table-container {
-    @apply bg-surface-card rounded-xl overflow-hidden shrink-0;
+    @apply border-2 border-foreground overflow-hidden shrink-0;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0px 0px #121212;
   }
 
   .sets-table {
@@ -475,18 +581,19 @@
   }
 
   .sets-table th {
-    @apply font-bold text-content-tertiary uppercase text-center;
-    font-family: 'Satoshi', sans-serif;
+    @apply font-black uppercase text-center;
+    font-family: 'Outfit', sans-serif;
     font-size: 10px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.08em;
     padding: 8px;
-    background: #E8E8E8;
+    background: #121212;
+    color: #FFFFFF;
   }
 
   .sets-table td {
     @apply text-center;
     padding: 10px 4px;
-    border-bottom: 1px solid #E8E8E8;
+    border-bottom: 1px solid #E0E0E0;
   }
 
   .sets-table tr:last-child td {
@@ -494,35 +601,42 @@
   }
 
   .sets-table input {
-    @apply border-stroke border-[1.5px] rounded-lg bg-canvas text-content-primary font-medium text-center transition-colors focus:outline-none;
-    font-family: 'Satoshi', sans-serif;
+    @apply border-2 border-foreground bg-canvas text-content-primary font-bold text-center transition-colors focus:outline-none;
+    font-family: 'Outfit', sans-serif;
     width: 72px;
-    padding: 10px 8px;
+    padding: 8px 6px;
     font-size: 16px;
   }
 
   .sets-table input:focus {
-    border-color: #4F46E5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    background: #F0C020;
+    border-color: #121212;
   }
 
   .remove-set-btn {
-    @apply bg-transparent border-0 text-content-disabled cursor-pointer flex items-center justify-center transition-colors active:text-content-negative;
+    @apply bg-transparent border-0 text-content-disabled cursor-pointer flex items-center justify-center transition-colors active:text-b-red;
     padding: 4px 8px;
   }
 
   .set-summary {
-    @apply flex justify-between items-center mt-4 p-4 bg-surface-card rounded-xl font-medium text-content-secondary shrink-0;
-    font-size: 14px;
+    @apply flex justify-between items-center mt-3 p-4 border-2 border-foreground font-bold uppercase shrink-0;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    background: #FFFFFF;
+    color: #555555;
+    box-shadow: 3px 3px 0px 0px #121212;
   }
 
-  /* History Screen */
+  /* ── History Screen ──────────────────────────────────────────────────────── */
+
   .history-list {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col gap-3;
   }
 
   .history-item {
-    @apply bg-surface-card rounded-xl p-4;
+    @apply p-4 border-2 border-foreground;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0px 0px #121212;
   }
 
   .history-header {
@@ -530,13 +644,16 @@
   }
 
   .history-date {
-    @apply font-bold;
-    font-size: 15px;
+    @apply font-black uppercase;
+    font-size: 14px;
+    letter-spacing: 0.04em;
   }
 
   .history-duration {
-    @apply font-medium text-content-secondary ml-2;
-    font-size: 12px;
+    @apply font-bold uppercase;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: #888888;
   }
 
   .history-body-parts {
@@ -548,9 +665,9 @@
   }
 
   .history-exercise {
-    @apply flex justify-between items-center py-[10px] font-medium;
-    font-size: 14px;
-    border-bottom: 1px solid #E8E8E8;
+    @apply flex justify-between items-center py-[10px] font-bold;
+    font-size: 13px;
+    border-bottom: 1px solid #E0E0E0;
   }
 
   .history-exercise:last-child {
@@ -558,39 +675,52 @@
   }
 
   .history-exercise-name {
-    @apply flex items-center gap-2 font-medium;
+    @apply flex items-center gap-2 font-bold;
   }
 
   .history-exercise-stats {
-    @apply font-medium text-content-secondary;
-    font-size: 12px;
+    @apply font-bold uppercase;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: #888888;
   }
 
-  /* Progress Screen */
+  /* ── Progress Screen ─────────────────────────────────────────────────────── */
+
   .exercise-picker {
     @apply mb-4 shrink-0;
   }
 
   .exercise-picker select {
-    @apply w-full bg-surface-card border-stroke border-[1.5px] rounded-xl text-content-primary font-medium transition-colors focus:outline-none focus:border-stroke-selected;
-    font-family: 'Satoshi', sans-serif;
-    font-size: 15px;
-    padding: 16px;
+    @apply w-full border-2 border-foreground text-content-primary font-bold uppercase transition-colors focus:outline-none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    padding: 14px 16px;
+    background: #FFFFFF;
+    box-shadow: 3px 3px 0px 0px #121212;
     -webkit-appearance: none;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23919191' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23121212' stroke-width='3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
     padding-right: 40px;
   }
 
+  .exercise-picker select:focus {
+    background-color: #F0C020;
+  }
+
   .progress-content {
-    @apply bg-surface-card rounded-xl p-4;
+    @apply p-4 border-2 border-foreground;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0px 0px #121212;
   }
 
   .progress-header {
-    @apply flex items-center gap-2 font-bold mb-4;
-    font-size: 16px;
+    @apply flex items-center gap-2 font-black uppercase mb-4;
+    font-size: 14px;
+    letter-spacing: 0.04em;
   }
 
   .progress-stats {
@@ -599,27 +729,30 @@
   }
 
   .progress-stat {
-    @apply text-center bg-canvas rounded-lg;
+    @apply text-center border-2 border-foreground;
     padding: 16px 8px;
+    background: #F0C020;
   }
 
   .progress-stat-value {
-    @apply font-bold text-content-primary;
-    font-size: 24px;
+    @apply font-black;
+    font-size: 26px;
     line-height: 1;
     margin-bottom: 4px;
+    color: #121212;
   }
 
   .progress-stat-label {
-    @apply font-bold text-content-tertiary uppercase;
-    font-size: 10px;
-    letter-spacing: 0.5px;
+    @apply font-black uppercase;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: #121212;
   }
 
   .progress-recent-label {
-    @apply font-bold text-content-tertiary uppercase;
-    font-size: 11px;
-    letter-spacing: 0.7px;
+    @apply font-black uppercase border-b-2 border-foreground pb-1;
+    font-size: 10px;
+    letter-spacing: 0.12em;
     margin: 16px 0 8px;
   }
 
@@ -629,26 +762,26 @@
   }
 
   .progress-row {
-    @apply flex justify-between items-center py-[10px] font-medium;
-    font-size: 14px;
-    border-bottom: 1px solid #E8E8E8;
+    @apply flex justify-between items-center py-[10px] font-bold;
+    font-size: 13px;
+    border-bottom: 1px solid #E0E0E0;
   }
 
   .progress-row:last-child {
     border-bottom: none;
   }
 
-  /* Modals */
+  /* ── Modals ──────────────────────────────────────────────────────────────── */
+
   .modal {
     @apply fixed inset-0 flex justify-center items-end z-[1000];
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(18, 18, 18, 0.7);
   }
 
   .modal.hidden { display: none; }
 
   .modal-content {
-    @apply bg-canvas w-full overflow-y-auto;
-    border-radius: 12px 12px 0 0;
+    @apply bg-white w-full overflow-y-auto border-t-4 border-x-4 border-foreground;
     padding: 24px;
     max-width: 500px;
     max-height: 85vh;
@@ -657,22 +790,25 @@
 
   .modal-content::before {
     content: '';
-    @apply block mx-auto rounded-pill;
-    width: 36px;
+    @apply block mx-auto;
+    width: 40px;
     height: 4px;
-    background: #E8E8E8;
+    background: #E0E0E0;
     margin-bottom: 24px;
   }
 
   .modal-content h3 {
-    @apply font-bold mb-1;
-    font-size: 20px;
-    line-height: 28px;
+    @apply font-black uppercase mb-1;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
   }
 
   .modal-subtext {
-    @apply font-medium text-content-secondary mb-4;
-    font-size: 14px;
+    @apply font-bold uppercase mb-4;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: #888888;
   }
 
   .form-group {
@@ -680,33 +816,49 @@
   }
 
   .form-group label {
-    @apply block font-bold text-content-tertiary uppercase;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+    @apply block font-black uppercase;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #888888;
+    margin-bottom: 6px;
   }
 
   .form-group input,
   .form-group select {
-    @apply w-full bg-surface-card border-stroke border-[1.5px] rounded-lg text-content-primary font-medium transition-colors focus:outline-none focus:border-stroke-selected;
-    font-family: 'Satoshi', sans-serif;
+    @apply w-full border-2 border-foreground font-bold transition-colors focus:outline-none;
+    font-family: 'Outfit', sans-serif;
     font-size: 15px;
-    padding: 16px;
+    padding: 12px 14px;
+    background: #F0F0F0;
+    color: #121212;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    background: #F0C020;
+    border-color: #121212;
   }
 
   .modal-actions {
-    @apply flex gap-2 mt-6;
+    @apply flex gap-3 mt-6;
   }
 
   .btn {
-    @apply flex-1 border-0 rounded-lg font-bold cursor-pointer transition-opacity active:opacity-80;
-    font-family: 'Satoshi', sans-serif;
-    font-size: 15px;
-    padding: 16px;
+    @apply flex-1 border-2 border-foreground font-black uppercase cursor-pointer transition-all;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    padding: 15px;
+    box-shadow: 3px 3px 0px 0px #121212;
   }
 
-  .btn-primary   { @apply text-content-inverse border-0; background: linear-gradient(135deg, #4F46E5, #7C3AED); }
-  .btn-secondary { @apply bg-surface-card text-content-primary; }
+  .btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+  }
+
+  .btn-primary   { background: #D02020; color: #FFFFFF; }
+  .btn-secondary { background: #F0F0F0; color: #121212; }
 
   /* Body Part Chips */
   .bp-chips-container {
@@ -714,16 +866,25 @@
   }
 
   .bp-chip {
-    @apply flex items-center bg-canvas border-stroke border-[1.5px] rounded-pill text-content-secondary font-medium cursor-pointer transition-all;
-    font-family: 'Satoshi', sans-serif;
-    font-size: 13px;
+    @apply flex items-center bg-white border-2 border-foreground font-bold uppercase cursor-pointer transition-all;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
     height: 40px;
-    padding: 0 16px;
+    padding: 0 14px;
     gap: 6px;
+    box-shadow: 2px 2px 0px 0px #121212;
+  }
+
+  .bp-chip:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
 
   .bp-chip-sel {
-    @apply bg-surface-primary border-surface-primary text-content-inverse;
+    background: #D02020;
+    color: #FFFFFF;
+    border-color: #121212;
   }
 
   .bp-chip-icon {
@@ -731,18 +892,20 @@
   }
 
   .bp-chip-icon svg {
-    @apply w-[15px] h-[15px];
+    @apply w-[14px] h-[14px];
   }
 
   /* Start Suggestions */
   .start-suggestion-section {
-    @apply bg-surface-card rounded-xl p-4 mb-4;
+    @apply border-2 border-foreground p-4 mb-4;
+    background: #F0C020;
   }
 
   .start-suggestion-label {
-    @apply block font-bold text-content-tertiary uppercase mb-2;
-    font-size: 11px;
-    letter-spacing: 0.5px;
+    @apply block font-black uppercase mb-2;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #121212;
   }
 
   .start-suggestion-list {
@@ -750,23 +913,28 @@
   }
 
   .start-ex-row {
-    @apply flex justify-between items-center font-medium;
-    font-size: 14px;
+    @apply flex justify-between items-center font-bold;
+    font-size: 13px;
   }
 
   .start-ex-stat {
-    @apply font-medium text-content-secondary;
-    font-size: 13px;
+    @apply font-bold;
+    font-size: 12px;
+    color: #555555;
   }
 
   .start-no-history {
-    @apply font-medium text-content-tertiary;
-    font-size: 13px;
+    @apply font-bold uppercase;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: #555555;
   }
 
   /* Previous Session Card */
   .prev-session-card {
-    @apply bg-surface-card rounded-xl p-4 mb-4 shrink-0;
+    @apply border-2 border-foreground p-4 mb-4 shrink-0;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0px 0px #121212;
   }
 
   .prev-session-inner {
@@ -778,9 +946,10 @@
   }
 
   .prev-label {
-    @apply font-bold text-content-tertiary uppercase;
-    font-size: 11px;
-    letter-spacing: 0.5px;
+    @apply font-black uppercase;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #888888;
   }
 
   .prev-chips {
@@ -788,32 +957,39 @@
   }
 
   .prev-chip {
-    @apply bg-canvas border-stroke border rounded-pill font-medium text-content-secondary;
-    padding: 4px 8px;
-    font-size: 12px;
+    @apply bg-canvas border-2 border-foreground font-bold;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: #555555;
   }
 
-  .prev-chip.prev-more { @apply text-content-tertiary; }
+  .prev-chip.prev-more { color: #888888; }
 
   .pr-row {
     @apply flex items-center gap-2;
   }
 
   .pr-badge-sm {
-    @apply font-bold text-content-caution rounded-pill;
-    font-size: 10px;
-    background: rgba(224, 121, 18, 0.1);
-    padding: 2px 8px;
+    @apply font-black uppercase;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    background: #F0C020;
+    color: #121212;
+    padding: 2px 6px;
+    border: 1.5px solid #121212;
   }
 
   .pr-val {
-    @apply font-bold text-content-caution;
+    @apply font-black;
     font-size: 13px;
+    color: #D02020;
   }
 
   /* Video Link */
   .video-link-section {
-    @apply mt-4 bg-surface-card rounded-xl p-4 shrink-0;
+    @apply mt-4 border-2 border-foreground p-4 shrink-0;
+    background: #FFFFFF;
+    box-shadow: 3px 3px 0px 0px #121212;
   }
 
   .vl-row {
@@ -825,47 +1001,60 @@
   }
 
   .vl-label {
-    @apply shrink-0 font-medium text-content-secondary;
-    font-size: 13px;
+    @apply shrink-0 font-bold uppercase;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: #888888;
   }
 
   .vl-url {
-    @apply flex-1 font-medium text-content-primary overflow-hidden text-ellipsis whitespace-nowrap;
+    @apply flex-1 font-bold text-content-primary overflow-hidden text-ellipsis whitespace-nowrap;
     font-size: 13px;
     text-decoration: underline;
-    text-decoration-color: #E8E8E8;
   }
 
   .vl-empty {
-    @apply flex-1 font-medium text-content-tertiary;
-    font-size: 13px;
+    @apply flex-1 font-bold uppercase;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: #AAAAAA;
   }
 
   .vl-btn {
-    @apply bg-canvas border-stroke border rounded-lg font-bold text-content-secondary cursor-pointer shrink-0;
-    font-family: 'Satoshi', sans-serif;
-    font-size: 12px;
+    @apply border-2 border-foreground font-black uppercase cursor-pointer shrink-0 transition-all;
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
     padding: 4px 8px;
+    background: #F0F0F0;
+    box-shadow: 2px 2px 0px 0px #121212;
+  }
+
+  .vl-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
 
   /* Type Badges */
   .type-badge {
-    @apply inline-flex items-center rounded-pill font-bold uppercase shrink-0 align-middle;
+    @apply inline-flex items-center font-black uppercase shrink-0 align-middle;
     padding: 2px 7px;
-    font-size: 10px;
-    letter-spacing: 0.4px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    border: 1.5px solid #121212;
   }
 
-  .type-strength   { background: rgba(34,34,34,0.07);   @apply text-content-primary; }
-  .type-cardio     { background: rgba(193,53,21,0.08);  @apply text-content-negative; }
-  .type-bodyweight { background: rgba(0,101,79,0.08);   @apply text-content-positive; }
-  .type-duration   { background: rgba(224,121,18,0.1);  @apply text-content-caution; }
+  .type-strength   { background: #E0E0E0;  color: #121212; }
+  .type-cardio     { background: #D02020;  color: #FFFFFF; }
+  .type-bodyweight { background: #1040C0;  color: #FFFFFF; }
+  .type-duration   { background: #F0C020;  color: #121212; }
 
   /* PR Toast */
   .pr-toast {
-    @apply fixed top-5 left-1/2 -translate-x-1/2 bg-canvas-dark rounded-pill flex items-center gap-2 z-[2000] whitespace-nowrap;
-    padding: 10px 20px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    @apply fixed top-5 left-1/2 -translate-x-1/2 flex items-center gap-2 z-[2000] whitespace-nowrap border-2 border-foreground;
+    background: #F0C020;
+    padding: 10px 18px;
+    box-shadow: 4px 4px 0px 0px #121212;
   }
 
   .pr-toast.hidden { display: none; }
@@ -880,24 +1069,34 @@
   }
 
   .pr-toast-title {
-    @apply font-bold text-content-inverse;
-    font-size: 13px;
+    @apply font-black uppercase;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: #121212;
   }
 
   .pr-toast-detail {
-    @apply font-medium;
+    @apply font-bold;
     font-size: 11px;
-    color: rgba(255,255,255,0.55);
+    color: #555555;
   }
 
-  /* Routines */
+  /* ── Routines ────────────────────────────────────────────────────────────── */
+
   .routines-list {
-    @apply flex flex-col gap-2;
-    padding: 16px 24px;
+    @apply flex flex-col gap-3;
+    padding: 4px 0 16px;
   }
 
   .routine-card {
-    @apply flex items-center gap-4 bg-surface-card rounded-xl p-4 cursor-pointer transition-opacity active:opacity-70;
+    @apply flex items-center gap-4 border-2 border-foreground p-4 cursor-pointer transition-all;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0px 0px #121212;
+  }
+
+  .routine-card:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
   }
 
   .routine-card-main {
@@ -906,46 +1105,63 @@
   }
 
   .routine-card-name {
-    @apply font-bold text-content-primary whitespace-nowrap overflow-hidden text-ellipsis;
-    font-size: 16px;
+    @apply font-black uppercase whitespace-nowrap overflow-hidden text-ellipsis;
+    font-size: 15px;
+    letter-spacing: 0.04em;
   }
 
   .routine-card-name:empty::before {
-    content: 'Untitled Routine';
-    @apply text-content-disabled;
+    content: 'UNTITLED ROUTINE';
+    color: #AAAAAA;
   }
 
   .routine-card-meta {
-    @apply font-medium text-content-secondary;
-    font-size: 13px;
+    @apply font-bold uppercase;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: #888888;
   }
 
   .routine-card-last {
-    @apply font-medium text-content-tertiary;
-    font-size: 11px;
+    @apply font-bold uppercase;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: #AAAAAA;
   }
 
   .routine-name-input {
-    @apply flex-1 bg-transparent border-0 outline-none font-bold text-content-primary placeholder:text-content-disabled;
-    font-family: inherit;
-    font-size: 18px;
+    @apply flex-1 bg-transparent border-0 outline-none font-black uppercase placeholder:text-content-disabled;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    color: #121212;
   }
 
   .start-routine-btn {
-    @apply text-content-inverse border-0 rounded-pill font-bold cursor-pointer whitespace-nowrap shrink-0 transition-opacity active:opacity-75;
-    font-family: inherit;
-    font-size: 13px;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    @apply border-2 border-foreground font-black uppercase cursor-pointer whitespace-nowrap shrink-0 transition-all;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 8px 14px;
+    background: #D02020;
+    color: #FFFFFF;
+    box-shadow: 3px 3px 0px 0px #121212;
+  }
+
+  .start-routine-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
   }
 
   .routine-exercises-list {
-    @apply flex flex-col gap-2;
-    padding: 16px 24px;
+    @apply flex flex-col gap-3;
+    padding: 4px 0 16px;
   }
 
   .routine-exercise-card {
-    @apply bg-surface-card rounded-xl p-4;
+    @apply border-2 border-foreground p-4;
+    background: #FFFFFF;
+    box-shadow: 3px 3px 0px 0px #121212;
   }
 
   .routine-exercise-header {
@@ -953,39 +1169,57 @@
   }
 
   .routine-exercise-name {
-    @apply flex items-center gap-1 font-bold text-content-primary min-w-0;
-    font-size: 15px;
+    @apply flex items-center gap-1 font-black uppercase min-w-0;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: #121212;
   }
 
   .routine-remove-exercise-btn {
-    @apply bg-transparent border-0 font-medium text-content-disabled cursor-pointer shrink-0 transition-colors active:text-content-negative;
-    font-family: inherit;
-    font-size: 12px;
+    @apply bg-transparent border-0 font-bold uppercase cursor-pointer shrink-0 transition-colors active:text-b-red;
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
     padding: 4px 8px;
+    color: #AAAAAA;
   }
 
   .routine-remove-set-btn {
-    @apply bg-transparent border-0 text-content-disabled cursor-pointer flex items-center justify-center transition-colors active:text-content-negative;
+    @apply bg-transparent border-0 text-content-disabled cursor-pointer flex items-center justify-center transition-colors active:text-b-red;
     padding: 4px;
   }
 
   .routine-add-set-btn {
-    @apply w-full bg-transparent rounded-lg font-bold text-content-secondary cursor-pointer transition-colors active:border-stroke-selected active:text-content-primary;
-    border: 1px dashed #B0B0B0;
-    font-family: inherit;
-    font-size: 13px;
+    @apply w-full bg-transparent font-black uppercase cursor-pointer transition-colors;
+    border: 2px dashed #888888;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #888888;
     padding: 8px;
     margin-top: 8px;
   }
 
+  .routine-add-set-btn:active {
+    border-color: #121212;
+    color: #121212;
+  }
+
   .routine-add-exercise-btn {
-    @apply bg-transparent rounded-xl font-bold text-content-secondary cursor-pointer flex items-center justify-center gap-2 transition-colors active:border-stroke-selected active:text-content-primary;
-    width: calc(100% - 48px);
-    margin: 8px 24px 24px;
-    border: 1.5px dashed #B0B0B0;
-    font-family: inherit;
-    font-size: 14px;
-    padding: 16px;
+    @apply bg-transparent font-black uppercase cursor-pointer flex items-center justify-center gap-2 transition-colors;
+    width: 100%;
+    margin: 4px 0 24px;
+    border: 2px dashed #888888;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: #888888;
+    padding: 18px;
+  }
+
+  .routine-add-exercise-btn:active {
+    border-color: #121212;
+    color: #121212;
   }
 
   #picker-exercise-list {
@@ -994,39 +1228,48 @@
   }
 
   .added-check {
-    @apply flex items-center justify-center text-content-positive shrink-0;
+    @apply flex items-center justify-center shrink-0;
+    color: #D02020;
     width: 32px;
     height: 32px;
   }
 
-  /* Sync Status */
+  /* ── Sync Status ─────────────────────────────────────────────────────────── */
+
   .sync-row {
     @apply flex items-center gap-1;
     margin-top: 2px;
   }
 
   .sync-dot {
-    @apply rounded-full shrink-0 bg-content-disabled;
+    @apply rounded-full shrink-0;
     width: 6px;
     height: 6px;
+    background: #AAAAAA;
   }
 
-  .sync-dot--synced     { @apply bg-content-positive; }
-  .sync-dot--syncing    { @apply bg-content-caution; animation: syncPulse 1.2s ease-in-out infinite; }
-  .sync-dot--error      { @apply bg-content-negative; }
-  .sync-dot--signed-out { @apply bg-content-disabled; }
+  .sync-dot--synced     { background: #006640; }
+  .sync-dot--syncing    { background: #D02020; animation: syncPulse 1.2s ease-in-out infinite; }
+  .sync-dot--error      { background: #C02020; }
+  .sync-dot--signed-out { background: #AAAAAA; }
 
   .sync-label {
-    @apply font-medium text-content-tertiary;
-    font-size: 11px;
+    @apply font-bold uppercase;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: #888888;
   }
 
   .sync-btn {
-    @apply bg-transparent border-stroke-mid border rounded-pill font-bold text-content-secondary cursor-pointer ml-1;
-    font-family: inherit;
-    font-size: 11px;
+    @apply bg-transparent border-2 border-foreground font-black uppercase cursor-pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
     padding: 2px 8px;
+    margin-left: 4px;
+    color: #121212;
   }
+
 }
 
 /* ─── Animations ─────────────────────────────────────────────────────────── */

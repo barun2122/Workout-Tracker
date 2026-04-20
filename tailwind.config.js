@@ -7,49 +7,53 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        canvas: {
-          DEFAULT: '#FFFFFF',
-          dark:    '#222222',
-        },
+        canvas:    '#F0F0F0',
+        foreground:'#121212',
+        'b-red':   '#D02020',
+        'b-blue':  '#1040C0',
+        'b-yellow':'#F0C020',
+        muted:     '#E0E0E0',
+        // Semantic tokens (used by app.js template strings + @apply)
         surface: {
-          primary:  '#222222',
-          card:     '#F7F7F7',
-          disabled: '#DDDDDD',
+          primary:  '#121212',
+          card:     '#FFFFFF',
+          disabled: '#D0D0D0',
         },
         content: {
-          primary:  '#222222',
-          secondary:'#717171',
-          tertiary: '#919191',
-          disabled: '#B0B0B0',
+          primary:  '#121212',
+          secondary:'#555555',
+          tertiary: '#888888',
+          disabled: '#AAAAAA',
           inverse:  '#FFFFFF',
-          positive: '#00654F',
-          caution:  '#E07912',
-          negative: '#C13515',
+          positive: '#006640',
+          caution:  '#C07010',
+          negative: '#C02020',
         },
-        // Brand accent color — indigo
-        accent: {
-          DEFAULT: '#4F46E5',
-          light:   '#818CF8',
-          dark:    '#4338CA',
-        },
-        // Border colors — using 'stroke' to avoid conflict with Tailwind's border-width utilities
         stroke: {
-          DEFAULT:  '#E8E8E8',
-          mid:      '#B0B0B0',
-          selected: '#222222',
+          DEFAULT:  '#121212',
+          mid:      '#888888',
+          selected: '#121212',
         },
       },
       fontFamily: {
-        satoshi: ['Satoshi', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        sans:   ['Outfit', 'sans-serif'],
+        outfit: ['Outfit', 'sans-serif'],
       },
       borderRadius: {
-        sm:      '8px',
-        DEFAULT: '12px',
-        pill:    '100px',
+        none:    '0px',
+        sm:      '0px',
+        DEFAULT: '0px',
+        pill:    '9999px',
+        full:    '9999px',
+        xl:      '0px',
+        '2xl':   '0px',
       },
-      spacing: {
-        // Override Tailwind spacing to exactly match design tokens
-        // Tailwind default already matches: 1=4px, 2=8px, 4=16px, 6=24px, 9=36px, 12=48px, 16=64px
+      boxShadow: {
+        'hard-xs': '2px 2px 0px 0px #121212',
+        'hard-sm': '3px 3px 0px 0px #121212',
+        'hard':    '4px 4px 0px 0px #121212',
+        'hard-md': '6px 6px 0px 0px #121212',
+        'hard-lg': '8px 8px 0px 0px #121212',
       },
     },
   },
